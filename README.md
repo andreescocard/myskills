@@ -58,32 +58,30 @@ Depending on how the repo grows, it may include folders like:
 - `checklists/` — review and validation helpers
 - `templates/` — reusable Markdown templates
 - `notes/` — short references for recurring tasks
+- `frontend/` — front-end release and safety review prompts
 
 ## Example skills
 
-### `safetoship.md`
+### `frontend/fe-safetoship.md`
 
-A stricter release-safety review prompt.
+A strict frontend release-safety review prompt.
 
 Checks things like:
-- production risks
-- regressions
-- memory leaks
-- SSR breaks
-- unsafe browser API usage
-- missing cleanup
-- runtime edge cases
-- whether the change is actually safe to ship
+- memory and cleanup issues
+- SSR safety and browser-only globals
+- runtime correctness for async, loading, and error paths
+- UI and shared component regressions
+- rollout and dependency risks
 
-### `safetoshiplite.md`
+### `frontend/fe-safetoshiplite.md`
 
-A lighter and faster version.
+A lighter frontend safety pass for fast reviews.
 
 Good for:
-- quick risk scan
-- short verdict
-- top issues only
-- fast review before merging
+- quick frontend risk scans
+- high-signal issues only
+- catching obvious SSR, memory, and runtime problems
+- short, focused review before merging
 
 ## Before / After
 
