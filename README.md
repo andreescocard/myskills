@@ -1,70 +1,125 @@
 # myskills
 
-A curated collection of reusable prompts, commands, notes, and workflow helpers for development, debugging, planning, and day-to-day engineering tasks.
+small prompts. useful skills. less repeated thinking.
 
-## About
+Prompts • Commands • Checklists • Notes • Why
 
-This repository is where I organize practical resources I use in my workflow, such as:
+---
+A public collection of reusable prompts, command files, review helpers, and workflow notes for coding, debugging, planning, and shipping with less friction.
 
-- custom command prompts
-- debugging checklists
-- safe-to-ship review prompts
-- planning templates
-- frontend and backend investigation helpers
-- notes and references for recurring technical tasks
+Built for real dev work:
+- investigate faster
+- review safer
+- repeat less
+- keep useful patterns versioned
 
-The goal is to keep useful knowledge centralized, reusable, and easy to evolve over time.
+## What this repo is
 
-## What you’ll find here
+`myskills` is my toolbox.
 
-Depending on how the repository grows, it may include:
+Not a framework.  
+Not a course.  
+Not a giant knowledge base.
+
+Just practical stuff I actually reuse:
+- prompts
+- slash commands
+- review flows
+- debugging helpers
+- release checks
+- templates
+- notes worth keeping
+
+## What you may find here
+
+Depending on how the repo grows:
 
 - `commands/` — reusable command-style prompts
-- `prompts/` — investigation, planning, and implementation prompts
-- `checklists/` — review and validation checklists
-- `notes/` — short technical notes and reminders
-- `templates/` — reusable Markdown templates for docs, specs, and reviews
+- `prompts/` — investigation and implementation prompts
+- `checklists/` — review and validation helpers
+- `templates/` — reusable Markdown templates
+- `notes/` — short references for recurring tasks
 
-## Use cases
+## Why
 
-This repo is useful if you want to:
+Because good prompts and good workflows get lost.
 
-- speed up repetitive engineering tasks
-- standardize code review and release review prompts
-- improve debugging consistency
-- keep reusable prompts versioned in Git
-- build a personal knowledge base for software development
+One day they live in chat.  
+Next day gone.  
+Then same problem happen again.  
+Then same prompt rebuilt again.
 
-## Example resources
+This repo keeps useful patterns in one place:
+- versioned
+- searchable
+- reusable
+- easy to improve
 
-Some examples of the kind of content this repo may contain:
+## Example skills
 
-- `safetoship.md` — stricter release-safety review prompt
-- `safetoshiplite.md` — lightweight safe-to-ship review prompt
+### `safetoship.md`
+Strict release-safety review.
 
-## Why this repo exists
+Checks things like:
+- risks
+- regressions
+- memory leaks
+- SSR breaks
+- unsafe browser API usage
+- missing cleanup
+- bad edge cases
+- “is this actually safe to ship?”
 
-A lot of useful engineering knowledge gets lost in chats, scattered notes, or old projects.  
-This repository is an attempt to keep that knowledge in one place, versioned and easy to reuse.
+### `safetoshiplite.md`
+Smaller and faster version.
+
+Good when you want:
+- quick risk scan
+- short verdict
+- top issues only
+
+## Who this is for
+
+Useful for developers who want to:
+- standardize repeated prompts
+- review code more consistently
+- keep reusable command files in Git
+- build a personal engineering toolkit
+- reduce setup friction on future projects
 
 ## How to use
 
-You can:
+Clone, copy, adapt.
 
-1. browse the folders
-2. copy prompts or templates into your workflow
-3. adapt them for your project or team
-4. keep your own fork with customizations
+Use files as:
+- personal prompt library
+- Claude Code commands
+- skills
+- templates for your own repo
+- base material for team workflows
+
+Take what helps.  
+Change what does not.
+
+## Philosophy
+
+Few words.  
+Useful output.  
+Real workflow value.
+
+If a prompt saves time twice, keep it.  
+If a checklist catches bugs, keep it.  
+If a note prevents future pain, keep it.
+
+Everything else can die.
 
 ## Contributing
 
-This is primarily a personal repository, but ideas and improvements are always welcome.
+This is primarily a personal repository, but improvements, ideas, and cleaner patterns are always welcome.
 
 ## License
 
-Add a license here if you want this repository to be reusable by others, for example:
+Choose the one that matches your intent.
 
+Common choice:
 - MIT
-- Apache-2.0
-
-If you do not want others to reuse the content freely, choose a more restrictive license or leave this section aligned with your intended usage.
