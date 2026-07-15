@@ -134,18 +134,67 @@ Good for:
 
 **Same goal. Less repeated thinking.**
 
+## Install
+
+Prompts are plain Markdown. Installers copy them as **slash commands** for
+Claude Code, Cursor, and Codex — with a rename so the two `safetoship.md`
+files don't collide (`ng-*` for Angular, `hybris-*` for Hybris).
+
+**1. Clone**
+
+```bash
+git clone https://github.com/andreescocard/myskills.git
+cd myskills
+```
+
+**2. Run the installer for your OS**
+
+```bash
+# Linux / macOS / Git-Bash
+bash install.sh
+```
+
+```powershell
+# Windows PowerShell
+./install.ps1
+```
+
+```bat
+:: Windows CMD
+install.bat
+```
+
+Each installer copies to all three tools:
+
+| Tool         | Location                  |
+| ------------ | ------------------------- |
+| Claude Code  | `~/.claude/commands/`     |
+| Cursor       | `~/.cursor/commands/`     |
+| Codex        | `~/.codex/prompts/`       |
+
+**3. Use**
+
+Type `/` in any tool. Installed commands:
+
+- `/ng-safetoship`, `/ng-safetoshiplite`
+- `/hybris-safetoship`, `/hybris-safetoshiplite`
+- `/befablefull`, `/befablelite`, `/befableplan`, `/befablerun`
+
+No restart needed.
+
 ## Usage
 
 Use the files however they fit your workflow.
 
 Examples:
 - copy prompts into ChatGPT, Claude, Codex, Cursor, or other tools
-- turn them into Claude Code slash commands
+- turn them into slash commands (see [Install](#install))
 - adapt them into skills
 - use them as review checklists
 - keep your own fork with project-specific versions
 
-Clone and adapt:
+Manual clone:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/myskills.git
+git clone https://github.com/andreescocard/myskills.git
+```
