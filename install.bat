@@ -1,23 +1,28 @@
 @echo off
 REM myskills installer - Windows CMD
-REM Installs prompt files as slash commands for Claude Code, Cursor, Codex.
+REM Installs ALL prompt .md files as slash commands for Claude Code, Cursor, Codex.
+REM New .md files are picked up automatically - no per-file list to maintain.
 setlocal enabledelayedexpansion
 set "SRC=%~dp0"
+if "%SRC:~-1%"=="\" set "SRC=%SRC:~0,-1%"
 
 echo myskills installer
 
 for %%T in ("%USERPROFILE%\.claude\commands" "%USERPROFILE%\.cursor\commands" "%USERPROFILE%\.codex\prompts") do (
   if not exist "%%~T" mkdir "%%~T"
-  copy /Y "%SRC%frontend\angular\safetoship.md"     "%%~T\ng-safetoship.md" >nul
-  copy /Y "%SRC%frontend\angular\safetoshiplite.md" "%%~T\ng-safetoshiplite.md" >nul
-  copy /Y "%SRC%frontend\hybris\safetoship.md"      "%%~T\hybris-safetoship.md" >nul
-  copy /Y "%SRC%frontend\hybris\safetoshiplite.md"  "%%~T\hybris-safetoshiplite.md" >nul
-  copy /Y "%SRC%general\befable\befablefull.md"     "%%~T\befablefull.md" >nul
-  copy /Y "%SRC%general\befable\befablelite.md"     "%%~T\befablelite.md" >nul
-  copy /Y "%SRC%general\befable\befableplan.md"     "%%~T\befableplan.md" >nul
-  copy /Y "%SRC%general\befable\befablerun.md"      "%%~T\befablerun.md" >nul
-  echo   installed -^> %%~T
+  set /a n=0
+  for /f "delims=" %%F in ('dir /b /s /a-d "%SRC%\frontend\*.md" "%SRC%\general\*.md" 2^>nul') do (
+    set "F=%%F"
+    set "REL=!F:%SRC%\=!"
+    set "BASE=%%~nxF"
+    set "DST=!BASE!"
+    echo !REL! | findstr /b /i "frontend\\angular\\" >nul && set "DST=ng-!BASE!"
+    echo !REL! | findstr /b /i "frontend\\hybris\\" >nul && set "DST=hybris-!BASE!"
+    copy /Y "%%F" "%%~T\!DST!" >nul
+    set /a n+=1
+  )
+  echo   installed !n! files -^> %%~T
 )
 
-echo Done. Use: /ng-safetoship /hybris-safetoship /befablefull etc.
+echo Done.
 endlocal
