@@ -58,29 +58,51 @@ Depending on how the repo grows, it may include folders like:
 - `checklists/` — review and validation helpers
 - `templates/` — reusable Markdown templates
 - `notes/` — short references for recurring tasks
-- `frontend/` — front-end release and safety review prompts
+- `frontend/angular/` — Angular release and safety review prompts
+- `frontend/hybris/` — SAP Hybris/Commerce accelerator storefront review prompts
 
 ## Example skills
 
-### `frontend/fe-safetoship.md`
+### `frontend/angular/safetoship.md`
 
-A strict frontend release-safety review prompt.
+A strict Angular release-safety review prompt.
 
 Checks things like:
-- memory and cleanup issues
-- SSR safety and browser-only globals
+- memory and cleanup issues (RxJS `takeUntilDestroyed`, timers, observers)
+- SSR safety and browser-only globals (`isPlatformBrowser`, hydration)
 - runtime correctness for async, loading, and error paths
 - UI and shared component regressions
 - rollout and dependency risks
 
-### `frontend/fe-safetoshiplite.md`
+### `frontend/angular/safetoshiplite.md`
 
-A lighter frontend safety pass for fast reviews.
+A lighter Angular safety pass for fast reviews.
 
 Good for:
 - quick frontend risk scans
 - high-signal issues only
 - catching obvious SSR, memory, and runtime problems
+- short, focused review before merging
+
+### `frontend/hybris/safetoship.md`
+
+A strict Hybris/SAP Commerce accelerator storefront release-safety review prompt.
+
+Checks things like:
+- JSP/`.tag` correctness and escaping (XSS on CMS-authored components)
+- SCSS design-token discipline (no hardcoded color/font, no inline styles)
+- US/AU dual-storefront parity (shared change mirrored to both trees)
+- build-pipeline sync (R2 gulp/webpack vs manually-rebuilt blue theme)
+- impex-seeded CMS component and addon-override regressions
+
+### `frontend/hybris/safetoshiplite.md`
+
+A lighter Hybris safety pass for fast reviews.
+
+Good for:
+- quick storefront risk scans
+- catching US/AU parity gaps and stale builds fast
+- inline-style / hardcoded-token and unescaped-output checks
 - short, focused review before merging
 
 ## Before / After
