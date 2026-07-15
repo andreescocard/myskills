@@ -1,5 +1,5 @@
 ---
-description: Quick release-safety pass for current changes
+description: Quick Angular release-safety pass for current changes
 ---
 
 Scan the current diff (staged + unstaged against main) for the highest-signal risks only.
