@@ -1,5 +1,6 @@
 # myskills installer - PowerShell (Windows)
-# Installs prompt files as slash commands for Claude Code, Cursor, Codex.
+# Installs ALL prompt .md files as slash commands for Claude Code, Cursor, Codex.
+# New .md files are picked up automatically — no per-file list to maintain.
 $ErrorActionPreference = 'Stop'
 $src = Split-Path -Parent $MyInvocation.MyCommand.Path
 
@@ -9,32 +10,33 @@ $targets = @{
   'Codex'       = Join-Path $HOME '.codex\prompts'
 }
 
-# source -> renamed destination (avoids safetoship collision)
-$map = @(
-  @{ s = 'frontend\angular\safetoship.md';     d = 'ng-safetoship.md' }
-  @{ s = 'frontend\angular\safetoshiplite.md'; d = 'ng-safetoshiplite.md' }
-  @{ s = 'frontend\hybris\safetoship.md';      d = 'hybris-safetoship.md' }
-  @{ s = 'frontend\hybris\safetoshiplite.md';  d = 'hybris-safetoshiplite.md' }
-  @{ s = 'general\befable\befablefull.md';      d = 'befablefull.md' }
-  @{ s = 'general\befable\befablelite.md';       d = 'befablelite.md' }
-  @{ s = 'general\befable\befableplan.md';       d = 'befableplan.md' }
-  @{ s = 'general\befable\befablerun.md';        d = 'befablerun.md' }
-)
+# dest name from relative path: frontend\angular\* -> ng-*, frontend\hybris\* -> hybris-*, else basename
+function Get-DestName($rel) {
+  $base = Split-Path -Leaf $rel
+  $r = $rel -replace '\\', '/'
+  if ($r -like 'frontend/angular/*') { return "ng-$base" }
+  if ($r -like 'frontend/hybris/*')  { return "hybris-$base" }
+  return $base
+}
+
+$files = @()
+foreach ($root in @('frontend', 'general')) {
+  $rootPath = Join-Path $src $root
+  if (Test-Path $rootPath) {
+    $files += Get-ChildItem -Path $rootPath -Recurse -File -Filter *.md
+  }
+}
 
 Write-Host 'myskills installer'
 foreach ($t in $targets.GetEnumerator()) {
   $dir = $t.Value
   New-Item -ItemType Directory -Force $dir | Out-Null
   $n = 0
-  foreach ($m in $map) {
-    $from = Join-Path $src $m.s
-    if (Test-Path $from) {
-      Copy-Item -Force $from (Join-Path $dir $m.d)
-      $n++
-    } else {
-      Write-Host "  ! missing: $($m.s)"
-    }
+  foreach ($f in $files) {
+    $rel = $f.FullName.Substring($src.Length).TrimStart('\', '/')
+    Copy-Item -Force $f.FullName (Join-Path $dir (Get-DestName $rel))
+    $n++
   }
   Write-Host "  [$($t.Key)] $n files -> $dir"
 }
-Write-Host 'Done. Use: /ng-safetoship /hybris-safetoship /befablefull etc.'
+Write-Host 'Done.'

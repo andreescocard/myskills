@@ -1,40 +1,34 @@
 #!/usr/bin/env bash
 # myskills installer — Linux/macOS/Git-Bash
-# Installs prompt files as slash commands for Claude Code, Cursor, Codex.
+# Installs ALL prompt .md files as slash commands for Claude Code, Cursor, Codex.
+# New .md files are picked up automatically — no per-file list to maintain.
 set -euo pipefail
 
 SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# target dirs per tool
 CLAUDE_DIR="$HOME/.claude/commands"
 CURSOR_DIR="$HOME/.cursor/commands"
 CODEX_DIR="$HOME/.codex/prompts"
 
-# src -> dest name (renamed to avoid collisions)
-declare -a MAP=(
-  "frontend/angular/safetoship.md|ng-safetoship.md"
-  "frontend/angular/safetoshiplite.md|ng-safetoshiplite.md"
-  "frontend/hybris/safetoship.md|hybris-safetoship.md"
-  "frontend/hybris/safetoshiplite.md|hybris-safetoshiplite.md"
-  "general/befable/befablefull.md|befablefull.md"
-  "general/befable/befablelite.md|befablelite.md"
-  "general/befable/befableplan.md|befableplan.md"
-  "general/befable/befablerun.md|befablerun.md"
-)
+# dest name from path: frontend/angular/* -> ng-*, frontend/hybris/* -> hybris-*, else basename
+dest_name() {
+  local rel="$1" base; base="$(basename "$rel")"
+  case "$rel" in
+    frontend/angular/*) echo "ng-$base" ;;
+    frontend/hybris/*)  echo "hybris-$base" ;;
+    *)                  echo "$base" ;;
+  esac
+}
 
 install_to() {
   local dir="$1" label="$2"
   mkdir -p "$dir"
   local n=0
-  for pair in "${MAP[@]}"; do
-    local src="${pair%%|*}" dst="${pair##*|}"
-    if [[ -f "$SRC/$src" ]]; then
-      cp -f "$SRC/$src" "$dir/$dst"
-      n=$((n+1))
-    else
-      echo "  ! missing: $src"
-    fi
-  done
+  while IFS= read -r -d '' f; do
+    local rel="${f#$SRC/}"
+    cp -f "$f" "$dir/$(dest_name "$rel")"
+    n=$((n+1))
+  done < <(find "$SRC/frontend" "$SRC/general" -type f -name '*.md' -print0 2>/dev/null)
   echo "  [$label] $n files -> $dir"
 }
 
@@ -42,4 +36,4 @@ echo "myskills installer"
 install_to "$CLAUDE_DIR" "Claude Code"
 install_to "$CURSOR_DIR" "Cursor"
 install_to "$CODEX_DIR"  "Codex"
-echo "Done. Use: /ng-safetoship /hybris-safetoship /befablefull etc."
+echo "Done."
