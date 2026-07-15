@@ -1,5 +1,5 @@
 ---
-description: Strict release-safety review for current changes
+description: Strict Angular release-safety review for current changes
 ---
 
 Review the current branch diff against main (staged + unstaged changes and all impacted files).
