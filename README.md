@@ -60,6 +60,7 @@ Depending on how the repo grows, it may include folders like:
 - `notes/` — short references for recurring tasks
 - `frontend/angular/` — Angular release and safety review prompts
 - `frontend/hybris/` — SAP Hybris/Commerce accelerator storefront review prompts
+- `general/linkedin/` — LinkedIn profile audit (and optional apply) prompt
 
 ## Example skills
 
@@ -104,6 +105,19 @@ Good for:
 - catching US/AU parity gaps and stale builds fast
 - inline-style / hardcoded-token and unescaped-output checks
 - short, focused review before merging
+
+### `general/linkedin/linkedinaudit.md`
+
+A re-runnable LinkedIn profile audit.
+
+Checks things like:
+- headline / About / current role / Open-to-work telling one consistent story
+- missing sections (Featured, Projects, Languages, Recommendations, top skills)
+- vague experience bullets without measurable results
+- market freshness: tools and versions recruiters search for today
+- optional `apply` mode with browser-automation gotchas for editing the profile
+
+Re-run it when a new model ships or your role changes: every pass judges the profile against today's market.
 
 ## Before / After
 
@@ -179,6 +193,7 @@ Type `/` in any tool. Installed commands:
 - `/ng-safetoship`, `/ng-safetoshiplite`
 - `/hybris-safetoship`, `/hybris-safetoshiplite`
 - `/befablefull`, `/befablelite`, `/befableplan`, `/befablerun`
+- `/linkedinaudit <profile-url> [apply]`
 
 No restart needed.
 
