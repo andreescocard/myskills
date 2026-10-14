@@ -11,7 +11,7 @@
 <p align="center">
   <a href="https://github.com/andreescocard/myskills/stargazers"><img src="https://img.shields.io/github/stars/andreescocard/myskills?style=flat&color=yellow" alt="Stars"></a>
   <a href="https://github.com/andreescocard/myskills/commits/main"><img src="https://img.shields.io/github/last-commit/andreescocard/myskills?style=flat" alt="Last Commit"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/YOUR_USERNAME/myskills?style=flat" alt="License"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/andreescocard/myskills?style=flat" alt="License"></a>
 </p>
 
 <p align="center">
