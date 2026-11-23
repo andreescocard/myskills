@@ -17,7 +17,7 @@
 <p align="center">
   <a href="#what-is-this">What is this?</a> •
   <a href="#whats-inside">What's inside</a> •
-  <a href="#example-skills">Example skills</a> •
+  <a href="#install">Install</a> •
   <a href="#usage">Usage</a> •
   <a href="#why">Why</a>
 </p>
