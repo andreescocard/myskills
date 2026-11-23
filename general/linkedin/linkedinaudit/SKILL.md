@@ -1,5 +1,5 @@
 ---
-name: linkedin-audit
+name: linkedinaudit
 description: Audit a LinkedIn profile against today's hiring market and produce a prioritized, ready-to-paste list of fixes; optionally apply them in the browser. Re-run whenever the market, your role, or the model you use changes.
 argument-hint: "<linkedin profile url or slug> [apply]"
 disable-model-invocation: true

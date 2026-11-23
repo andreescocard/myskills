@@ -1,5 +1,8 @@
 ---
+name: ng-safetoshiplite
 description: Quick Angular release-safety pass for current changes
+disable-model-invocation: true
+user-invocable: true
 ---
 
 Scan the current diff (staged + unstaged against main) for the highest-signal risks only.

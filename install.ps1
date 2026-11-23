@@ -1,42 +1,63 @@
 # myskills installer - PowerShell (Windows)
-# Installs ALL prompt .md files as slash commands for Claude Code, Cursor, Codex.
-# New .md files are picked up automatically — no per-file list to maintain.
+# Every folder holding a SKILL.md is a skill. The folder name is the command name.
+#   Claude Code -> ~\.claude\skills\<name>\    (whole folder)
+#   Codex       -> ~\.codex\skills\<name>\     (whole folder)
+#   Cursor      -> ~\.cursor\commands\<name>.md (flattened: Cursor has commands, not skills)
+# Options: -WithAgents    also copy agents\*.md to ~\.claude\agents
+#          -WithSettings  print the settings snippet to merge by hand (never overwrites anything)
+param([switch]$WithAgents, [switch]$WithSettings)
 $ErrorActionPreference = 'Stop'
 $src = Split-Path -Parent $MyInvocation.MyCommand.Path
 
-$targets = @{
-  'Claude Code' = Join-Path $HOME '.claude\commands'
-  'Cursor'      = Join-Path $HOME '.cursor\commands'
-  'Codex'       = Join-Path $HOME '.codex\prompts'
-}
+$claudeSkills  = Join-Path $HOME '.claude\skills'
+$claudeCmds    = Join-Path $HOME '.claude\commands'
+$codexSkills   = Join-Path $HOME '.codex\skills'
+$codexPrompts  = Join-Path $HOME '.codex\prompts'
+$cursorCmds    = Join-Path $HOME '.cursor\commands'
 
-# dest name from relative path: frontend\angular\* -> ng-*, frontend\hybris\* -> hybris-*, else basename
-function Get-DestName($rel) {
-  $base = Split-Path -Leaf $rel
-  $r = $rel -replace '\\', '/'
-  if ($r -like 'frontend/angular/*') { return "ng-$base" }
-  if ($r -like 'frontend/hybris/*')  { return "hybris-$base" }
-  return $base
-}
+# every SKILL.md outside hidden folders
+$files = Get-ChildItem -Path $src -Recurse -File -Filter SKILL.md |
+  Where-Object { $_.FullName.Substring($src.Length) -notmatch '[\\/]\.' } |
+  Sort-Object FullName
 
-$files = @()
-foreach ($root in @('frontend', 'general')) {
-  $rootPath = Join-Path $src $root
-  if (Test-Path $rootPath) {
-    $files += Get-ChildItem -Path $rootPath -Recurse -File -Filter *.md
+function Install-Skills($dir, $label) {
+  New-Item -ItemType Directory -Force $dir | Out-Null
+  foreach ($f in $files) {
+    $name = $f.Directory.Name
+    $dest = Join-Path $dir $name
+    if (Test-Path $dest) { Remove-Item -Recurse -Force $dest }
+    Copy-Item -Recurse -Force $f.Directory.FullName $dest
   }
+  Write-Host "  [$label] $($files.Count) skills -> $dir"
 }
 
 Write-Host 'myskills installer'
-foreach ($t in $targets.GetEnumerator()) {
-  $dir = $t.Value
-  New-Item -ItemType Directory -Force $dir | Out-Null
-  $n = 0
-  foreach ($f in $files) {
-    $rel = $f.FullName.Substring($src.Length).TrimStart('\', '/')
-    Copy-Item -Force $f.FullName (Join-Path $dir (Get-DestName $rel))
-    $n++
-  }
-  Write-Host "  [$($t.Key)] $n files -> $dir"
+Install-Skills $claudeSkills 'Claude Code'
+Install-Skills $codexSkills 'Codex'
+
+New-Item -ItemType Directory -Force $cursorCmds | Out-Null
+foreach ($f in $files) { Copy-Item -Force $f.FullName (Join-Path $cursorCmds "$($f.Directory.Name).md") }
+Write-Host "  [Cursor] $($files.Count) commands -> $cursorCmds"
+
+# older versions installed flat .md commands; remove those copies so a skill is not listed twice
+foreach ($f in $files) {
+  $n = "$($f.Directory.Name).md"
+  Remove-Item -Force -ErrorAction SilentlyContinue (Join-Path $claudeCmds $n), (Join-Path $codexPrompts $n)
+}
+
+if ($WithAgents) {
+  $agentDir = Join-Path $HOME '.claude\agents'
+  New-Item -ItemType Directory -Force $agentDir | Out-Null
+  $agents = Get-ChildItem (Join-Path $src 'agents') -Filter *.md
+  Copy-Item -Force $agents.FullName $agentDir
+  Write-Host "  [Agents] $($agents.Count) agents -> $agentDir"
+}
+
+if ($WithSettings) {
+  Write-Host ''
+  Write-Host 'Merge this into ~\.claude\settings.json by hand (nothing was changed):'
+  Get-Content (Join-Path $src 'setup\settings.snippet.json')
+  Write-Host ''
+  Write-Host "Routing rules for your CLAUDE.md: $(Join-Path $src 'setup\CLAUDE.model-routing.md')"
 }
 Write-Host 'Done.'

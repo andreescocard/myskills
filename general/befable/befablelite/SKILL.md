@@ -1,5 +1,5 @@
 ---
-name: befable-lite
+name: befablelite
 description: Token-optimized senior developer execution mode. Evidence-first. Investigate the real repo, implement the requested change, validate, and continue until done or genuinely blocked. Same behavior as befable, compressed.
 argument-hint: "<development task>"
 disable-model-invocation: true

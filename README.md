@@ -51,73 +51,39 @@ Just practical things I actually want to keep:
 
 ## What's inside
 
-Depending on how the repo grows, it may include folders like:
+Each skill is a folder with a `SKILL.md`. The folder name is the command name.
 
-- `commands/` — reusable command-style prompts
-- `prompts/` — investigation and implementation prompts
-- `checklists/` — review and validation helpers
-- `templates/` — reusable Markdown templates
-- `notes/` — short references for recurring tasks
-- `frontend/angular/` — Angular release and safety review prompts
-- `frontend/hybris/` — SAP Hybris/Commerce accelerator storefront review prompts
-- `general/linkedin/` — LinkedIn profile audit (and optional apply) prompt
+| Folder | Skills | For |
+| --- | --- | --- |
+| `workflow/` | `token-budget`, `mem-audit`, `scaffold-cli`, `session-wrap` | Spending fewer tokens and closing work cleanly |
+| `general/befable/` | `befablefull`, `befablelite`, `befableplan`, `befablerun`, `befabletest` | Evidence-first execution, planning and verification modes |
+| `general/linkedin/` | `linkedinaudit` | Re-runnable LinkedIn profile audit |
+| `frontend/angular/` | `ng-safetoship`, `ng-safetoshiplite` | Angular release-safety review |
+| `sap-commerce/` | `hybris-safetoship`, `hybris-safetoshiplite`, `hybris-impex-review`, `accelerator-to-spartacus` | SAP Commerce storefront review, ImpEx review, migration scoping |
+| `agents/` | `opus-heavy`, `haiku-mechanic` | Subagents for model routing |
+| `setup/` | `settings.snippet.json`, `CLAUDE.model-routing.md` | `opusplan` + secret deny rules, and the routing rules to paste |
 
-## Example skills
+### Workflow skills
 
-### `frontend/angular/safetoship.md`
+- **`/token-budget`** picks the cheapest model tier that can do the job, gives a Grep → outline → ranged-read ladder for exploring code, and a checklist for delegating with a tight brief.
+- **`/mem-audit`** audits `CLAUDE.md`, `MEMORY.md` and memory files for duplicates, stale entries and things the repo already records. It also reports the tokens loaded every session. It applies nothing until you approve.
+- **`/scaffold-cli`** builds a thin CLI over an HTTP API (helper + one CLI per domain) so the agent reads 8 compact lines instead of 400 lines of JSON.
+- **`/session-wrap`** ends a session: decisions, open items, uncommitted changes, loose ends. Then it asks before committing.
 
-A strict Angular release-safety review prompt.
+### Review skills
 
-Checks things like:
-- memory and cleanup issues (RxJS `takeUntilDestroyed`, timers, observers)
-- SSR safety and browser-only globals (`isPlatformBrowser`, hydration)
-- runtime correctness for async, loading, and error paths
-- UI and shared component regressions
-- rollout and dependency risks
+- **`ng-safetoship`** is a strict Angular release-safety review: RxJS cleanup, SSR and browser-only globals, async and error paths, shared-component regressions, rollout risk. **`ng-safetoshiplite`** is the two-minute version.
+- **`hybris-safetoship`** is a strict review for SAP Commerce accelerator storefronts: JSP/`.tag` escaping, design-token discipline, multi-storefront parity, build-pipeline sync, impex-seeded CMS mismatches. **`hybris-safetoshiplite`** is the quick pass.
+- **`hybris-impex-review`** checks ImpEx for non-idempotent imports, missing keys, unresolved references, locale gaps, catalog-version mistakes and environment-specific values.
+- **`accelerator-to-spartacus`** inventories an Accelerator storefront and writes a migration checklist for Spartacus. It is read-only.
+- **`linkedinaudit`** audits a LinkedIn profile against today's market and produces a prioritized list of fixes. Re-run it when a new model ships or your role changes.
 
-### `frontend/angular/safetoshiplite.md`
+### Skills I use from others
 
-A lighter Angular safety pass for fast reviews.
+Not copied here, so you get their updates and the authors keep their licenses. Install them from the source:
 
-Good for:
-- quick frontend risk scans
-- high-signal issues only
-- catching obvious SSR, memory, and runtime problems
-- short, focused review before merging
-
-### `frontend/hybris/safetoship.md`
-
-A strict Hybris/SAP Commerce accelerator storefront release-safety review prompt.
-
-Checks things like:
-- JSP/`.tag` correctness and escaping (XSS on CMS-authored components)
-- SCSS design-token discipline (no hardcoded color/font, no inline styles)
-- multi-storefront parity (shared change mirrored to every tree)
-- build-pipeline sync (auto-synced vs manually-rebuilt themes)
-- impex-seeded CMS component and addon-override regressions
-
-### `frontend/hybris/safetoshiplite.md`
-
-A lighter Hybris safety pass for fast reviews.
-
-Good for:
-- quick storefront risk scans
-- catching multi-storefront parity gaps and stale builds fast
-- inline-style / hardcoded-token and unescaped-output checks
-- short, focused review before merging
-
-### `general/linkedin/linkedinaudit.md`
-
-A re-runnable LinkedIn profile audit.
-
-Checks things like:
-- headline / About / current role / Open-to-work telling one consistent story
-- missing sections (Featured, Projects, Languages, Recommendations, top skills)
-- vague experience bullets without measurable results
-- market freshness: tools and versions recruiters search for today
-- optional `apply` mode with browser-automation gotchas for editing the profile
-
-Re-run it when a new model ships or your role changes: every pass judges the profile against today's market.
+- [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman): ultra-compressed replies to cut output tokens
+- Skills for `grill-me`, `tdd`, `diagnose`, `handoff`, `to-prd`, `to-issues`, `triage` and `review` come from a public skills kit. Search for the one you like with `find-skills`, and install it from its own repository.
 
 ## Before / After
 
@@ -150,10 +116,6 @@ Re-run it when a new model ships or your role changes: every pass judges the pro
 
 ## Install
 
-Prompts are plain Markdown. Installers copy them as **slash commands** for
-Claude Code, Cursor, and Codex — with a rename so the two `safetoship.md`
-files don't collide (`ng-*` for Angular, `hybris-*` for Hybris).
-
 **1. Clone**
 
 ```bash
@@ -174,28 +136,32 @@ bash install.sh
 ```
 
 ```bat
-:: Windows CMD
+:: Windows CMD (runs install.ps1)
 install.bat
 ```
 
-Each installer copies to all three tools:
+Options (the same on every OS; PowerShell spells them `-WithAgents`, `-WithSettings`):
 
-| Tool         | Location                  |
-| ------------ | ------------------------- |
-| Claude Code  | `~/.claude/commands/`     |
-| Cursor       | `~/.cursor/commands/`     |
-| Codex        | `~/.codex/prompts/`       |
+| Option | Effect |
+| --- | --- |
+| `--with-agents` | Also copies `agents/*.md` to `~/.claude/agents` |
+| `--with-settings` | Prints `setup/settings.snippet.json` to merge by hand. It never edits your settings |
+
+Where things go:
+
+| Tool | Location | Form |
+| --- | --- | --- |
+| Claude Code | `~/.claude/skills/<name>/` | skill folder |
+| Codex | `~/.codex/skills/<name>/` | skill folder |
+| Cursor | `~/.cursor/commands/<name>.md` | flattened command |
+
+Older versions installed flat commands into `~/.claude/commands` and `~/.codex/prompts`. The installer removes those copies so a skill isn't listed twice.
 
 **3. Use**
 
-Type `/` in any tool. Installed commands:
+Type `/` and the skill name, for example `/token-budget`, `/ng-safetoship` or `/linkedinaudit <profile-url> [apply]`. Skills are explicit-invoke only, so the model won't run them on its own.
 
-- `/ng-safetoship`, `/ng-safetoshiplite`
-- `/hybris-safetoship`, `/hybris-safetoshiplite`
-- `/befablefull`, `/befablelite`, `/befableplan`, `/befablerun`
-- `/linkedinaudit <profile-url> [apply]`
-
-No restart needed.
+New skills are picked up automatically: add a folder with a `SKILL.md` and re-run the installer.
 
 ## Usage
 

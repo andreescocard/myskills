@@ -1,5 +1,5 @@
 ---
-name: befable-run
+name: befablerun
 description: Evidence-first senior developer execution mode. Take an existing/approved plan (or the described task) and execute it — implement, validate, review — continuing until done or genuinely blocked. Minimal ceremony, maximum action.
 argument-hint: "<plan or development task>"
 disable-model-invocation: true
@@ -12,7 +12,7 @@ effort: high
 
 ## Objective
 Execute and complete: `$ARGUMENTS`
-No args → use the most recent plan or explicit development task in the conversation (a `befable-plan` output, an approved plan, or a described task).
+No args → use the most recent plan or explicit development task in the conversation (a `befableplan` output, an approved plan, or a described task).
 
 This is the execution half of `befable`: bias to action. It changes execution behavior, not instruction priority. Keep following user constraints, `CLAUDE.md`, repo conventions, permission rules, and safety requirements.
 

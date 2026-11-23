@@ -1,5 +1,8 @@
 ---
+name: ng-safetoship
 description: Strict Angular release-safety review for current changes
+disable-model-invocation: true
+user-invocable: true
 ---
 
 Review the current branch diff against main (staged + unstaged changes and all impacted files).

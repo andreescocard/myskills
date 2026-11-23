@@ -1,5 +1,5 @@
 ---
-name: befable-plan
+name: befableplan
 description: Evidence-first senior developer planning mode. Investigate the real repository deeply and produce a concrete, executable implementation plan. Do NOT modify code — stop at the plan for user approval.
 argument-hint: "<development task>"
 disable-model-invocation: true

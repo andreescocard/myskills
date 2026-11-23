@@ -1,5 +1,5 @@
 ---
-name: befable
+name: befablefull
 description: Manually enter a high-effort, evidence-first senior developer execution mode. Investigate the real repository, implement the requested change, validate it, and continue until the task is complete or genuinely blocked.
 argument-hint: "<development task>"
 disable-model-invocation: true
